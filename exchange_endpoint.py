@@ -90,7 +90,8 @@ def log_message(message_dict):
     msg = json.dumps(message_dict)
 
     # TODO: Add message to the Log table
-    
+    with open('server_log.txt', 'w') as f:
+    	json.dump(msg, f)
     return
 
 def get_algo_keys():
@@ -119,8 +120,42 @@ def fill_order(order, txes=[]):
 	# Then you can use the "txes" argument to pass the current list of txes down the recursion
 	# Note: your fill_order function is *not* required to be recursive, and it is *not* required that it return a list of transactions, 
 	# but executing a group of transactions can be more efficient, and gets around the Ethereum nonce issue described in the instructions
-    
-    pass
+    matched = False
+    for existing_oder in txes:
+        if existing_oder.buy_currency == order_obj.sell_currency and \
+                existing_oder.sell_currency == order_obj.buy_currency:
+            if existing_oder.sell_amount / existing_oder.buy_amount >= order_obj.buy_amount / order_obj.sell_amount:
+                # If a match is found
+                matched = True
+                existing_oder.filled = datetime.now()
+                order_obj.filled = datetime.now()
+                existing_oder.counterparty_id = order_obj.id
+                order_obj.counterparty_id = existing_oder.id
+                session.commit()
+                break
+
+    if matched:
+        # If one of the orders is not completely filled
+        if existing_oder.sell_amount < order_obj.buy_amount:
+            new_order_obj = Order(sender_pk=order_obj.sender_pk, receiver_pk=order_obj.receiver_pk,
+                                  buy_currency=order_obj.buy_currency, sell_currency=order_obj.sell_currency,
+                                  buy_amount=order_obj.buy_amount - existing_oder.sell_amount,
+                                  sell_amount=order_obj.sell_amount - existing_oder.buy_amount,
+                                  creator_id=order_obj.id)
+
+        elif order_obj.sell_amount < existing_oder.buy_amount:
+            new_order_obj = Order(sender_pk=existing_oder.sender_pk, receiver_pk=existing_oder.receiver_pk,
+                                  buy_currency=existing_oder.buy_currency,
+                                  sell_currency=existing_oder.sell_currency,
+                                  buy_amount=existing_oder.buy_amount - order_obj.sell_amount,
+                                  sell_amount=existing_oder.sell_amount - order_obj.buy_amount,
+                                  creator_id=existing_oder.id)
+        else:
+            return
+        g.session.add(new_order_obj)
+        g.session.commit()
+        fill_order(new_order_obj)
+
   
 def execute_txes(txes):
     if txes is None:
@@ -196,12 +231,29 @@ def trade():
         # Your code here
         
         # 1. Check the signature
-        
+        payload = content.get("payload")
+        sig = content.get("sig")
+        result = check_sig(payload,sig)
         # 2. Add the order to the table
-        
+        if result:
+            order = content['payload']
+            order_obj = Order(sender_pk=order['sender_pk'], receiver_pk=order['receiver_pk'],
+                              buy_currency=order['buy_currency'], sell_currency=order['sell_currency'],
+                              buy_amount=order['buy_amount'], sell_amount=order['sell_amount'], tx_id=order['tx_id'],
+                              signature=content['sig'])
+            g.session.add(order_obj)
+            g.session.commit()  
+
+        else:
+            log_message(payload)
+            return jsonify(False)
+
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
 
+
         # 3b. Fill the order (as in Exchange Server II) if the order is valid
+        orders = [order for order in g.session.query(Order).filter(Order.filled == None).all()]
+        fill_order(order_obj, orders)
         
         # 4. Execute the transactions
         
@@ -210,10 +262,20 @@ def trade():
 
 @app.route('/order_book')
 def order_book():
+	# Same as before
     fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk" ]
-    
-    # Same as before
-    pass
+    orders = [order for order in g.session.query(Order).all()]
+    data = []
+    for existing_oder in orders:
+        json_order = {'sender_pk': existing_oder.sender_pk, 'receiver_pk': existing_oder.receiver_pk,
+                      'buy_currency': existing_oder.buy_currency, 'sell_currency': existing_oder.sell_currency,
+                      'buy_amount': existing_oder.buy_amount, 'sell_amount': existing_oder.sell_amount,
+                      'signature': existing_oder.signature}
+
+        data.append(json_order)
+    result = {"data": data}
+    return jsonify(result)
+
 
 if __name__ == '__main__':
     app.run(port='5002')
