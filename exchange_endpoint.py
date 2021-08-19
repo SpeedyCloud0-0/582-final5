@@ -375,7 +375,7 @@ def order_book():
         data.append(json_order)
     
     result = {"data": data}
-    return jsonify(result)
+    return jsonify(True)
 
 
 if __name__ == '__main__':
