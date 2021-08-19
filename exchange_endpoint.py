@@ -246,18 +246,21 @@ def address():
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
             return jsonify( "Error: no platform provided" )
-        if not content['payload']['platform'] in ["Ethereum", "Algorand"]:
+        if not content['platform'] in ["Ethereum", "Algorand"]:
             print( f"Error: {content['platform']} is an invalid platform" )
             return jsonify( f"Error: invalid platform provided: {content['platform']}"  )
         
-        if content['payload']['sell_currency'] == "Ethereum":
+        if content['platform'] == "Ethereum":
             #Your code here
             print("in eth")
             eth_sk, eth_pk  = get_eth_keys("eth_mnemonic.txt")
+            print(jsonify(eth_pk))
             return jsonify(eth_pk)
-        if content['payload']['sell_currency'] == "Algorand":
+        if content['platform'] == "Algorand":
             #Your code here
+            print("in algo")
             algo_sk, algo_pk = get_algo_keys()
+            print(jsonify(algo_pk))
             return jsonify(algo_pk)
 
 @app.route('/trade', methods=['POST'])
