@@ -7,6 +7,7 @@ from algosdk.future import transaction
 
 def connect_to_algo(connection_type=''):
     #Connect to Algorand node maintained by PureStake
+    print("in connect_to_algo")
     algod_token = "B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab"
     headers = {
         "X-API-Key": algod_token,
@@ -26,7 +27,7 @@ def connect_to_algo(connection_type=''):
 
     return None
 
-def send_tokens_algo( acl, sender_sk, txes):
+def send_tokens_algo(acl, sender_sk, txes):
     print("send tokens algo")
     params = acl.suggested_params()
     

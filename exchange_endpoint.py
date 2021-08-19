@@ -143,6 +143,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     return eth_sk, eth_pk
   
 def fill_order(order, txes=[]):
+	print("in fill_order")
     # TODO: 
     # Match orders (same as Exchange Server II)
     # Validate the order has a payment to back it (make sure the counterparty also made a payment)
@@ -219,7 +220,7 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
     for algo_tx in algo_txes:
-    	print("sending algo")
+        print("sending algo")
         send_tokens_algo(g.acl, algo_tx['sender_sk'], algo_tx)
         g.session.add(algo_tx)
 
@@ -312,6 +313,7 @@ def trade():
             return jsonify(False)
 
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
+        print("verify tx")
         if order_obj.platform == "Ethereum":
             try:
                 tx = w3.eth.get_transaction(order_obj.tx_id)
