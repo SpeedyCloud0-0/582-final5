@@ -113,26 +113,28 @@ def get_algo_keys():
     #     print(algo_phase)
     #     algo_sk = mnemonic.to_private_key(algo_phase)
     #     algo_pk = mnemonic.to_public_key(algo_phase)
-    with open("algo_mnemonic.txt") as fr:
-        try:
-            algo_phase = fr.readline()
-        except Exception as e:
-            print("not reading")
+    # with open("algo_mnemonic.txt") as fr:
+    #     try:
+    #         algo_phase = fr.readline()
+    #     except Exception as e:
+    #         print("not reading")
 
-    if algo_phase == "":
-        algo_sk, algo_pk = account.generate_account()
-        algo_phase = mnemonic.from_private_key(algo_sk)
-        with open("algo_mnemonic.txt") as fw:
-            fw.write(algo_phase)
-    else:
-        algo_sk = mnemonic.to_private_key(algo_phase)
-        algo_pk = mnemonic.to_public_key(algo_phase)
+    # if algo_phase == "":
+    #     algo_sk, algo_pk = account.generate_account()
+    #     algo_phase = mnemonic.from_private_key(algo_sk)
+    #     with open("algo_mnemonic.txt") as fw:
+    #         fw.write(algo_phase)
+    # else:
+    #     algo_sk = mnemonic.to_private_key(algo_phase)
+    #     algo_pk = mnemonic.to_public_key(algo_phase)
 
     # private_key, account_address = account.generate_account()
     # algo_phase = mnemonic.from_private_key(private_key)
-    print(algo_pk)
-    # algo_sk = mnemonic.to_private_key(algo_phase)
-    # algo_pk = mnemonic.to_public_key(algo_phase)
+    # print(algo_pk)
+    algo_phase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
+             "robust student above fat palace carpet mandate abstract neck"
+    algo_sk = mnemonic.to_private_key(algo_phase)
+    algo_pk = mnemonic.to_public_key(algo_phase)
     return algo_sk, algo_pk
 
 
