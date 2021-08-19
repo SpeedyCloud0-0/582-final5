@@ -133,7 +133,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
         acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
         with open(filename) as fw:
-        	print("open again")
+            print("open again")
             fw.write(mnemonic_secret)
     else:
         acct = w3.eth.account.from_mnemonic(global_secret)
