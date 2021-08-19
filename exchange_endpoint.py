@@ -335,9 +335,9 @@ def trade():
         if order['sell_currency'] == "Ethereum":
             print("verifying eth")
             try:
-                tx = w3.eth.get_transaction(order_obj.tx_id)
-                print("found eth tx")
-                if tx['value'] != order_obj.sell_amount or tx['from'] != order_obj.sender_pk:
+                tx = w3.eth.get_transaction(order['tx_id'])
+                print(tx)
+                if tx['value'] != order['sell_amount'] or tx['from'] != order['sender_pk']:
                     print("eth tx incorrect")
                     return jsonify(False)
             except Exception as e:
@@ -347,9 +347,9 @@ def trade():
         if order['sell_currency'] == "Algorand":
             print("verifying algo")
             try:
-                tx = g.icl.search_transactions(txid=order_obj.tx_id)
-                print("found algo tx")
-                if tx['amt'] != order_obj.sell_amount or tx['sender'] != order_obj.sender_pk:
+                tx = g.icl.search_transactions(txid=order['tx_id'])
+                print(tx)
+                if tx['amt'] != order['sell_amount'] or tx['sender'] != order['sender_pk']:
                     print("algo tx incorrect")
                     return jsonify(False)
             except Exception as e:
