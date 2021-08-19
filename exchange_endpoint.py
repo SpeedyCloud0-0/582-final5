@@ -100,6 +100,7 @@ def get_algo_keys():
     
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
+    print("hello this is algo")
     print(algo_phase)
     if algo_phase == "":
         algo_sk, algo_pk = account.generate_account()
