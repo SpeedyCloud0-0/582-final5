@@ -131,6 +131,7 @@ def get_algo_keys():
     # private_key, account_address = account.generate_account()
     # algo_phase = mnemonic.from_private_key(private_key)
     # print(algo_pk)
+    sender_address = "A6WMB5K7WINZ4SU2U33K2XBSKR6YUIBFKVKDNCV5J4OASR54K6MSZSIOJ4"
     algo_phase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
              "robust student above fat palace carpet mandate abstract neck"
     algo_sk = mnemonic.to_private_key(algo_phase)
