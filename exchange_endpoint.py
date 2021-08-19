@@ -242,6 +242,7 @@ def address():
     if request.method == "POST":
         print("in address")
         content = request.get_json(silent=True)
+        print(content)
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
             return jsonify( "Error: no platform provided" )
