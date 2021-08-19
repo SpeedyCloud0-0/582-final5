@@ -118,15 +118,15 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
     print("in get_eth_keys")
-    w3 = web3()
-    print("after w3")
+    # w3 = web3()
+    # print("after w3")
     with open(filename, 'r') as fr:
         global_secret = fr.readline()
         print(global_secret)
 
     if global_secret == "":
         g.w3.eth.account.enable_unaudited_hdwallet_features()
-        acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
+        acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
         with open(filename, 'w') as fw:
             fw.write(mnemonic_secret)
