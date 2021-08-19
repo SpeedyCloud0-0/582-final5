@@ -332,7 +332,7 @@ def trade():
 
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
         print("verify tx")
-        if order_obj.platform == "Ethereum":
+        if order['sell_currency'] == "Ethereum":
             print("verifying eth")
             try:
                 tx = w3.eth.get_transaction(order_obj.tx_id)
@@ -344,7 +344,7 @@ def trade():
                 print("No transaction found")
                 return jsonify(False)
             print("eth tx verified")
-        if order_obj.platform == "Algorand":
+        if order['sell_currency'] == "Algorand":
             print("verifying algo")
             try:
                 tx = g.icl.search_transactions(txid=order_obj.tx_id)
