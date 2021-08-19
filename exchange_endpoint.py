@@ -102,7 +102,6 @@ def get_algo_keys():
     
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
-    print("hello this is algo")
     # global algo_phase
     # print(algo_phase)
     # if algo_phase == "":
@@ -115,7 +114,6 @@ def get_algo_keys():
     #     algo_sk = mnemonic.to_private_key(algo_phase)
     #     algo_pk = mnemonic.to_public_key(algo_phase)
     private_key, account_address = account.generate_account()
-    print("account")
     algo_phase = mnemonic.from_private_key(private_key)
     print(algo_phase)
 
@@ -255,7 +253,6 @@ def check_sig(payload,sig):
 @app.route('/address', methods=['POST'])
 def address():
     if request.method == "POST":
-        print("in address")
         content = request.get_json(silent=True)
         print(content)
         if 'platform' not in content.keys():
@@ -267,21 +264,19 @@ def address():
         
         if content['platform'] == "Ethereum":
             #Your code here
-            print("in eth")
             eth_sk, eth_pk  = get_eth_keys("eth_mnemonic.txt")
-            print(jsonify(eth_pk))
             return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             #Your code here
-            print("in algo")
             algo_sk, algo_pk = get_algo_keys()
-            print(jsonify(algo_pk))
             return jsonify(algo_pk)
 
 @app.route('/trade', methods=['POST'])
 def trade():
     print( "In trade", file=sys.stderr )
+    print("this is trade")
     connect_to_blockchains()
+    print("connect to blockchain")
     if request.method == "POST":
         content = request.get_json(silent=True)
         columns = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "platform", "tx_id", "receiver_pk"]
@@ -352,6 +347,7 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
+    print("in order_book")
     fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk" ]
     orders = [order for order in g.session.query(Order).all()]
     data = []

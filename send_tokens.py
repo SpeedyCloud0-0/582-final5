@@ -27,6 +27,7 @@ def connect_to_algo(connection_type=''):
     return None
 
 def send_tokens_algo( acl, sender_sk, txes):
+    print("send tokens algo")
     params = acl.suggested_params()
     
     # TODO: You might want to adjust the first/last valid rounds in the suggested_params
@@ -40,16 +41,18 @@ def send_tokens_algo( acl, sender_sk, txes):
     #       - Create the Payment transaction 
     #       - Sign the transaction
     sender_pk = account.address_from_private_key(sender_sk)
-    phrase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
-             "robust student above fat palace carpet mandate abstract neck"
+    print(sender_pk)
+    # phrase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
+    #          "robust student above fat palace carpet mandate abstract neck"
 
     tx_ids = []
     for i,tx in enumerate(txes):
+        print(i)
         unsigned_tx = transaction.PaymentTxn(sender_pk, tx_fee, first_valid_round+i, last_valid_round,
                                              gen_hash, tx['receiver_pk'], tx['amount'])
 
         # TODO: Sign the transaction
-        signed_tx = unsigned_txn.sign(mnemonic.to_private_key(phrase))
+        signed_tx = unsigned_txn.sign(sender_sk)
         
         try:
             print(f"Sending {tx['amount']} microalgo from {sender_pk} to {tx['receiver_pk']}" )

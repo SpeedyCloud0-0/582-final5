@@ -44,3 +44,4 @@ class Log(Base):
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.create_all(engine)
 
+#python3 .guides/582-final5/exchange_endpoint.py
