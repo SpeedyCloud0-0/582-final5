@@ -246,11 +246,11 @@ def address():
         
         if content['platform'] == "Ethereum":
             #Your code here
-            eth_pk = get_eth_keys("eth_mnemonic.txt").eth_pk
+            eth_sk, eth_pk  = get_eth_keys("eth_mnemonic.txt")
             return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             #Your code here
-            algo_pk = get_algo_keys().algo_pk
+            algo_sk, algo_pk = get_algo_keys()
             return jsonify(algo_pk)
 
 @app.route('/trade', methods=['POST'])
