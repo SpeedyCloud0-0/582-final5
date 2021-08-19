@@ -130,7 +130,6 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
             print("not reading")
 
     if global_secret == "":
-        g.w3.eth.account.enable_unaudited_hdwallet_features()
         acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
         with open(filename, 'w') as fw:
