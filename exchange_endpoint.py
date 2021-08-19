@@ -115,7 +115,6 @@ def get_algo_keys():
     #     algo_pk = mnemonic.to_public_key(algo_phase)
     private_key, account_address = account.generate_account()
     algo_phase = mnemonic.from_private_key(private_key)
-    print(algo_phase)
 
     algo_sk = mnemonic.to_private_key(algo_phase)
     algo_pk = mnemonic.to_public_key(algo_phase)
@@ -126,26 +125,21 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
     w3 = connect_to_eth()
-    print(filename)
     with open(filename) as fr:
         try:
             global_secret = fr.readline()
-            print(global_secret)
         except Exception as e:
             print("not reading")
 
     if global_secret == "":
         acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
-        print(mnemonic_secret)
         with open(filename) as fw:
             fw.write(mnemonic_secret)
     else:
         acct = w3.eth.account.from_mnemonic(global_secret)
 
     eth_sk = acct.key
-    print(eth_sk)
     eth_pk = acct.address
-    print(eth_pk)
     return eth_sk, eth_pk
   
 def fill_order(order, txes=[]):
@@ -203,6 +197,7 @@ def fill_order(order, txes=[]):
 
   
 def execute_txes(txes):
+	pring("executing txes")
     if txes is None:
         return True
     if len(txes) == 0:
@@ -254,7 +249,6 @@ def check_sig(payload,sig):
 def address():
     if request.method == "POST":
         content = request.get_json(silent=True)
-        print(content)
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
             return jsonify( "Error: no platform provided" )
@@ -304,6 +298,7 @@ def trade():
         payload = content.get("payload")
         sig = content.get("sig")
         result = check_sig(payload,sig)
+
         # 2. Add the order to the table
         if result:
             order = content['payload']
@@ -312,6 +307,7 @@ def trade():
                               buy_amount=order['buy_amount'], sell_amount=order['sell_amount'], tx_id=order['tx_id'],
                               signature=content['sig'])
             g.session.add(order_obj)
+            print("order added")
             g.session.commit()  
 
         else:
@@ -327,6 +323,7 @@ def trade():
             except Exception as e:
                 print("No transaction found")
                 return jsonify(False)
+            print("eth tx verified")
         if order_obj.platform == "Algorand":
             try:
                 tx = g.icl.search_transactions(txid=order_obj.tx_id)
@@ -334,11 +331,13 @@ def trade():
                     return jsonify(False)
             except Exception as e:
                 print("No transaction found")
-                return jsonify(False)        
+                return jsonify(False)
+            print("algo tx verified")        
 
         # 3b. Fill the order (as in Exchange Server II) if the order is valid
         txes = []
         fill_order(order_obj, txes)
+        print(txes)
         # 4. Execute the transactions
         execute_txes(txes)
         # If all goes well, return jsonify(True). else return jsonify(False)
