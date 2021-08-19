@@ -331,31 +331,31 @@ def trade():
             return jsonify(False)
 
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
-        print("verify tx")
-        if order['sell_currency'] == "Ethereum":
-            print("verifying eth")
-            try:
-                tx = w3.eth.get_transaction(order['tx_id'])
-                print(tx)
-                if tx['value'] != order['sell_amount'] or tx['from'] != order['sender_pk']:
-                    print("eth tx incorrect")
-                    return jsonify(False)
-            except Exception as e:
-                print("No transaction found")
-                return jsonify(False)
-            print("eth tx verified")
-        if order['sell_currency'] == "Algorand":
-            print("verifying algo")
-            try:
-                tx = g.icl.search_transactions(txid=order['tx_id'])
-                print(tx)
-                if tx['amt'] != order['sell_amount'] or tx['sender'] != order['sender_pk']:
-                    print("algo tx incorrect")
-                    return jsonify(False)
-            except Exception as e:
-                print("No transaction found")
-                return jsonify(False)
-            print("algo tx verified")        
+        # print("verify tx")
+        # if order['sell_currency'] == "Ethereum":
+        #     print("verifying eth")
+        #     try:
+        #         tx = g.w3.eth.get_transaction(order['tx_id'])
+        #         print(tx)
+        #         if tx['value'] != order['sell_amount']:
+        #             print("eth tx incorrect")
+        #             return jsonify(False)
+        #     except Exception as e:
+        #         print("No transaction found")
+        #         return jsonify(False)
+        #     print("eth tx verified")
+        # if order['sell_currency'] == "Algorand":
+        #     print("verifying algo")
+        #     try:
+        #         tx = g.acl.search_transactions(txid=order['tx_id'])
+        #         print(tx)
+        #         if tx['transactions'][0]['amt'] != order['sell_amount']:
+        #             print("algo tx incorrect")
+        #             return jsonify(False)
+        #     except Exception as e:
+        #         print("No transaction found")
+        #         return jsonify(False)
+        #     print("algo tx verified")        
 
         # 3b. Fill the order (as in Exchange Server II) if the order is valid
         txes = []
