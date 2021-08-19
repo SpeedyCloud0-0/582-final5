@@ -143,7 +143,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     return eth_sk, eth_pk
   
 def fill_order(order, txes=[]):
-	print("in fill_order")
+    print("in fill_order")
     # TODO: 
     # Match orders (same as Exchange Server II)
     # Validate the order has a payment to back it (make sure the counterparty also made a payment)
