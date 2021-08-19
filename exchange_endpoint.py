@@ -100,12 +100,16 @@ def get_algo_keys():
     
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
+    print(algo_phase)
     if algo_phase == "":
         algo_sk, algo_pk = account.generate_account()
+        print(algo_sk)
         algo_phase = mnemonic.from_private_key(algo_sk)
+        print(algo_phase)
     else:
-        algo_sk = mnemonic.to_private_key(mnemonic_phase)
-        algo_pk = mnemonic.to_public_key(mnemonic_phase)
+    	print(algo_phase)
+        algo_sk = mnemonic.to_private_key(algo_phase)
+        algo_pk = mnemonic.to_public_key(algo_phase)
 
     return algo_sk, algo_pk
 
