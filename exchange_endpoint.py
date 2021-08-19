@@ -219,6 +219,7 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
     for algo_tx in algo_txes:
+    	print("sending algo")
         send_tokens_algo(g.acl, algo_tx['sender_sk'], algo_tx)
         g.session.add(algo_tx)
 
@@ -354,7 +355,6 @@ def order_book():
         data.append(json_order)
     
     result = {"data": data}
-    print(result)
     return jsonify(result)
 
 
