@@ -137,6 +137,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
             fw.write(mnemonic_secret)
     else:
         acct = w3.eth.account.from_mnemonic(global_secret)
+        print("acct")
 
 
     eth_sk = acct._private_Key
