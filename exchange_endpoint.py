@@ -345,7 +345,7 @@ def trade():
                 return jsonify(False)
             print("eth tx verified")
         if order_obj.platform == "Algorand":
-        	   print("verifying algo")
+            print("verifying algo")
             try:
                 tx = g.icl.search_transactions(txid=order_obj.tx_id)
                 print("found algo tx")
