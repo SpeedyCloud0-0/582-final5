@@ -366,7 +366,7 @@ def order_book():
     
     result = {"data": data}
     print("returning from order_book")
-    return jsonify(result)
+    return result
 
 
 if __name__ == '__main__':
