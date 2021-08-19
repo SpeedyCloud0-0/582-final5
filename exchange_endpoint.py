@@ -121,8 +121,12 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     # w3 = web3()
     print(filename)
     with open(filename, 'r') as fr:
-        global_secret = fr.readline()
-        print(global_secret)
+    	try:
+    		global_secret = fr.readline()
+        	print(global_secret)
+        except Exception as e:
+        	print("not reading")
+
 
     if global_secret == "":
         g.w3.eth.account.enable_unaudited_hdwallet_features()
