@@ -91,7 +91,7 @@ def log_message(message_dict):
 
     # TODO: Add message to the Log table
     with open('server_log.txt', 'w') as f:
-    	json.dump(msg, f)
+        json.dump(msg, f)
     return
 
 def get_algo_keys():
@@ -100,34 +100,34 @@ def get_algo_keys():
     # the algorand public/private keys
     global algo_phase
     if algo_phase == "":
-    	algo_sk, algo_pk = account.generate_account()
-    	algo_phase = mnemonic.from_private_key(algo_sk)
+        algo_sk, algo_pk = account.generate_account()
+        algo_phase = mnemonic.from_private_key(algo_sk)
     else:
-    	algo_sk = mnemonic.to_private_key(mnemonic_phase)
-    	algo_pk = mnemonic.to_public_key(mnemonic_phase)
+        algo_sk = mnemonic.to_private_key(mnemonic_phase)
+        algo_pk = mnemonic.to_public_key(mnemonic_phase)
     
     return algo_sk, algo_pk
 
 
 def get_eth_keys(filename = "eth_mnemonic.txt"):
-	# TODO: Generate or read (using the mnemonic secret) 
+    # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
     global global_secret
     w3 = Web3()
     with open(filename, 'r') as fr:
-    	global_secret = fr.readline()
+        global_secret = fr.readline()
 
     if global_secret == "":
-    	w3.eth.account.enable_unaudited_hdwallet_features()
-    	acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
-    	with open(filename, 'w') as fw:
-    		fw.write(mnemonic_secret)
+        w3.eth.account.enable_unaudited_hdwallet_features()
+        acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
+        with open(filename, 'w') as fw:
+            fw.write(mnemonic_secret)
     else:
-    	acct = w3.eth.account.from_mnemonic(global_secret)
+        acct = w3.eth.account.from_mnemonic(global_secret)
 
     eth_sk = acct._private_Key
-   	eth_pk = acct._address
-		
+       eth_pk = acct._address
+        
     
     return eth_sk, eth_pk
   
@@ -137,11 +137,11 @@ def fill_order(order, txes=[]):
     # Validate the order has a payment to back it (make sure the counterparty also made a payment)
     # Make sure that you end up executing all resulting transactions!
 
-	# If your fill_order function is recursive, and you want to have fill_order return a list of transactions to be filled, 
-	# Then you can use the "txes" argument to pass the current list of txes down the recursion
-	# Note: your fill_order function is *not* required to be recursive, and it is *not* required that it return a list of transactions, 
-	# but executing a group of transactions can be more efficient, and gets around the Ethereum nonce issue described in the instructions
-	orders = [order for order in g.session.query(Order).filter(Order.filled == None).all()]
+    # If your fill_order function is recursive, and you want to have fill_order return a list of transactions to be filled, 
+    # Then you can use the "txes" argument to pass the current list of txes down the recursion
+    # Note: your fill_order function is *not* required to be recursive, and it is *not* required that it return a list of transactions, 
+    # but executing a group of transactions can be more efficient, and gets around the Ethereum nonce issue described in the instructions
+    orders = [order for order in g.session.query(Order).filter(Order.filled == None).all()]
     matched = False
     for existing_oder in txes:
         if existing_oder.buy_currency == order_obj.sell_currency and \
@@ -182,7 +182,7 @@ def fill_order(order, txes=[]):
         fill_order(new_order_obj, txes)
 
     else:
-    	return
+        return
 
   
 def execute_txes(txes):
@@ -207,12 +207,12 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
     for algo_tx in algo_txes:
-    	send_tokens_algo(acl, algo_tx['sender_sk'], algo_tx)
-    	g.session.add(algo_tx)
+        send_tokens_algo(acl, algo_tx['sender_sk'], algo_tx)
+        g.session.add(algo_tx)
 
     for eth_tx in etg_txes:
-    	send_tokens_eth(w3, eth_tx['sender_sk'], eth_tx)
-    	g.session.add(eth_tx)
+        send_tokens_eth(w3, eth_tx['sender_sk'], eth_tx)
+        g.session.add(eth_tx)
 
     g.session.commit()
 
@@ -301,20 +301,20 @@ def trade():
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
         if order_obj.platform == "Ethereum":
             try:
-        		tx = w3.eth.get_transaction(order_obj.tx_id)
-        		if tx['value'] != order_obj.sell_amount or tx['from'] != order_obj.sender_pk or tx['to'] != self.address():
-        			return jsonify(False)
-    		except Exception as e:
-    			print("No transaction found")
-        		return jsonify(False)
+                tx = w3.eth.get_transaction(order_obj.tx_id)
+                if tx['value'] != order_obj.sell_amount or tx['from'] != order_obj.sender_pk or tx['to'] != self.address():
+                    return jsonify(False)
+            except Exception as e:
+                print("No transaction found")
+                return jsonify(False)
         if order_obj.platform == "Algorand":
             try:
-        		tx = g.icl.search_transactions(txid=order_obj.tx_id)
-        		if tx['amt'] != order_obj.sell_amount or tx['sender'] != order_obj.sender_pk or tx['receiver'] != self.address():
-        			return jsonify(False)
-    		except Exception as e:
-    			print("No transaction found")
-        		return jsonify(False)		
+                tx = g.icl.search_transactions(txid=order_obj.tx_id)
+                if tx['amt'] != order_obj.sell_amount or tx['sender'] != order_obj.sender_pk or tx['receiver'] != self.address():
+                    return jsonify(False)
+            except Exception as e:
+                print("No transaction found")
+                return jsonify(False)        
 
         # 3b. Fill the order (as in Exchange Server II) if the order is valid
         txes = []
@@ -326,7 +326,7 @@ def trade():
 
 @app.route('/order_book')
 def order_book():
-	# Same as before
+    # Same as before
     fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk" ]
     orders = [order for order in g.session.query(Order).all()]
     data = []
