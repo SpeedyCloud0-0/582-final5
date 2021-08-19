@@ -129,7 +129,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
         except Exception as e:
             print("not reading")
 
-    if global_secret == "":
+    if global_secret == []:
         acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
         with open(filename, 'w') as fw:
