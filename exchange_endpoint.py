@@ -310,7 +310,7 @@ def trade():
             g.session.commit()  
 
         else:
-            log_message(payload)
+            # log_message(payload)
             return jsonify(False)
 
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
