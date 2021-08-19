@@ -232,7 +232,7 @@ def check_sig(payload,sig):
         result = (eth_account.Account.recover_message(encoded_msg, signature=signature) == pk)
     else:
         # Check if signature is valid
-        result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk)
+        result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk['Payload'])
     return result
 
 """ End of Helper methods"""
@@ -240,6 +240,7 @@ def check_sig(payload,sig):
 @app.route('/address', methods=['POST'])
 def address():
     if request.method == "POST":
+    	print("in address")
         content = request.get_json(silent=True)
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
@@ -250,6 +251,7 @@ def address():
         
         if content['payload']['sell_currency'] == "Ethereum":
             #Your code here
+            print("in eth")
             eth_sk, eth_pk  = get_eth_keys("eth_mnemonic.txt")
             return jsonify(eth_pk)
         if content['payload']['sell_currency'] == "Algorand":
