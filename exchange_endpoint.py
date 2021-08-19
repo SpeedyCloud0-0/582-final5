@@ -20,9 +20,7 @@ from models import Base, Order, TX, Log
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-secret_phase_algo = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
-             "robust student above fat palace carpet mandate abstract neck"
-secret_phase_eth = "inform lake track love vacuum juice virtual main define planet subway casual"
+algo_phase = ""
 # global_secret = ""
 
 app = Flask(__name__)
@@ -102,27 +100,22 @@ def get_algo_keys():
     
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
-    # global algo_phase
-    # if algo_phase == "":
-    #     algo_sk, algo_pk = account.generate_account()
-    #     algo_phase = mnemonic.from_private_key(algo_sk)
-    # else:
-    #     algo_sk = mnemonic.to_private_key(mnemonic_phase)
-    #     algo_pk = mnemonic.to_public_key(mnemonic_phase)
-    algo_sk = mnemonic.to_private_key(secret_phase_algo)
-    algo_pk = mnemonic.to_public_key(secret_phase_algo)
+    if algo_phase == "":
+        algo_sk, algo_pk = account.generate_account()
+        algo_phase = mnemonic.from_private_key(algo_sk)
+    else:
+        algo_sk = mnemonic.to_private_key(mnemonic_phase)
+        algo_pk = mnemonic.to_public_key(mnemonic_phase)
+
     return algo_sk, algo_pk
 
 
 def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
-
-    print("in get_eth_keys")
     w3 = connect_to_eth()
     print(filename)
     with open(filename) as fr:
-        print("open")
         try:
             global_secret = fr.readline()
             print(global_secret)
@@ -133,12 +126,9 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
         acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
         with open(filename) as fw:
-            print("open again")
             fw.write(mnemonic_secret)
     else:
         acct = w3.eth.account.from_mnemonic(global_secret)
-        print("acct")
-
 
     eth_sk = acct.key
     print(eth_sk)
