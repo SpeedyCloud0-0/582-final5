@@ -244,6 +244,7 @@ def check_sig(payload,sig):
         print("it's algo")
         # Check if signature is valid
         result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk['Payload'])
+        print("algo verified")
     return result
 
 """ End of Helper methods"""
