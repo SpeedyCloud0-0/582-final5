@@ -23,6 +23,8 @@ DBSession = sessionmaker(bind=engine)
 secret_phase_algo = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
              "robust student above fat palace carpet mandate abstract neck"
 secret_phase_eth = "inform lake track love vacuum juice virtual main define planet subway casual"
+# global_secret = ""
+
 app = Flask(__name__)
 
 """ Pre-defined methods (do not need to change) """
@@ -116,8 +118,6 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
     print("in get_eth_keys")
-    global global_secret
-
     w3 = web3()
     print("after w3")
     with open(filename, 'r') as fr:
