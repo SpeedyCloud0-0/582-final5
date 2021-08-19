@@ -101,17 +101,23 @@ def get_algo_keys():
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
     print("hello this is algo")
+    # print(algo_phase)
+    # if algo_phase == "":
+    #     algo_sk, algo_pk = account.generate_account()
+    #     print(algo_sk)
+    #     algo_phase = mnemonic.from_private_key(algo_sk)
+    #     print(algo_phase)
+    # else:
+    #     print(algo_phase)
+    #     algo_sk = mnemonic.to_private_key(algo_phase)
+    #     algo_pk = mnemonic.to_public_key(algo_phase)
+    private_key, account_address = account.generate_account()
+    print("account")
+    algo_phase = mnemonic.from_private_key(private_key)
     print(algo_phase)
-    if algo_phase == "":
-        algo_sk, algo_pk = account.generate_account()
-        print(algo_sk)
-        algo_phase = mnemonic.from_private_key(algo_sk)
-        print(algo_phase)
-    else:
-        print(algo_phase)
-        algo_sk = mnemonic.to_private_key(algo_phase)
-        algo_pk = mnemonic.to_public_key(algo_phase)
 
+    algo_sk = mnemonic.to_private_key(algo_phase)
+    algo_pk = mnemonic.to_public_key(algo_phase)
     return algo_sk, algo_pk
 
 
