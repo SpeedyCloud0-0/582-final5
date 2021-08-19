@@ -230,21 +230,17 @@ def execute_txes(txes):
 
 
 def check_sig(payload,sig):
-    print("in check_sig")
     signature = sig
     message = json.dumps(payload)
     pk = payload.get("sender_pk")
     platform = payload.get("platform")
     if platform == 'Ethereum':
-        print("it's eth")
         # Check if signature is valid
         encoded_msg = eth_account.messages.encode_defunct(text=message)
         result = (eth_account.Account.recover_message(encoded_msg, signature=signature) == pk)
     else:
-        print("it's algo")
         # Check if signature is valid
         result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk)
-        print("algo verified")
     return result
 
 """ End of Helper methods"""
@@ -300,7 +296,6 @@ def trade():
         payload = content.get("payload")
         sig = content.get("sig")
         result = check_sig(payload,sig)
-        print("got the result from check_sig")
         # 2. Add the order to the table
         if result:
             order = content['payload']
@@ -309,7 +304,6 @@ def trade():
                               buy_amount=order['buy_amount'], sell_amount=order['sell_amount'], tx_id=order['tx_id'],
                               signature=content['sig'])
             g.session.add(order_obj)
-            print("order added")
             g.session.commit()  
 
         else:
@@ -348,10 +342,8 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
-    print("in order_book")
-    fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk" ]
+    fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "receiver_pk", "tx_id"]
     orders = [order for order in g.session.query(Order).all()]
-    print(len(orders))
     data = []
     for existing_oder in orders:
         json_order = {'sender_pk': existing_oder.sender_pk, 'receiver_pk': existing_oder.receiver_pk,
@@ -362,8 +354,8 @@ def order_book():
         data.append(json_order)
     
     result = {"data": data}
-    print("returning from order_book")
-    return result
+    print(result)
+    return jsonify(result)
 
 
 if __name__ == '__main__':
