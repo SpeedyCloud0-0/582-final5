@@ -20,8 +20,9 @@ from models import Base, Order, TX, Log
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-secret_phase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
+secret_phase_algo = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
              "robust student above fat palace carpet mandate abstract neck"
+secret_phase_eth = "inform lake track love vacuum juice virtual main define planet subway casual"
 app = Flask(__name__)
 
 """ Pre-defined methods (do not need to change) """
@@ -106,8 +107,8 @@ def get_algo_keys():
     # else:
     #     algo_sk = mnemonic.to_private_key(mnemonic_phase)
     #     algo_pk = mnemonic.to_public_key(mnemonic_phase)
-    algo_sk = mnemonic.to_private_key(secret_phase)
-    algo_pk = mnemonic.to_public_key(secret_phase)
+    algo_sk = mnemonic.to_private_key(secret_phase_algo)
+    algo_pk = mnemonic.to_public_key(secret_phase_algo)
     return algo_sk, algo_pk
 
 
@@ -126,7 +127,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     #         fw.write(mnemonic_secret)
     # else:
     #     acct = g.w3.eth.account.from_mnemonic(global_secret)
-    acct = g.w3.eth.account.from_mnemonic(secret_phase)
+    acct = g.w3.eth.account.from_mnemonic(secret_phase_eth)
 
     eth_sk = acct._private_Key
     eth_pk = acct._address
