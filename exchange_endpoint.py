@@ -107,7 +107,7 @@ def get_algo_keys():
         algo_phase = mnemonic.from_private_key(algo_sk)
         print(algo_phase)
     else:
-    	print(algo_phase)
+        print(algo_phase)
         algo_sk = mnemonic.to_private_key(algo_phase)
         algo_pk = mnemonic.to_public_key(algo_phase)
 
