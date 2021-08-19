@@ -122,7 +122,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     w3 = connect_to_eth()
     print(filename)
     with open(filename) as fr:
-        print('open')
+        print("open")
         try:
             global_secret = fr.readlines()
             print(global_secret)
