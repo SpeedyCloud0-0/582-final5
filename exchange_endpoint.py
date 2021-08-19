@@ -126,7 +126,7 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
         acct = w3.eth.account.from_mnemonic(global_secret)
 
     eth_sk = acct._private_Key
-       eth_pk = acct._address
+    eth_pk = acct._address
         
     
     return eth_sk, eth_pk
