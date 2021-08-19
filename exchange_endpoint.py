@@ -230,18 +230,18 @@ def execute_txes(txes):
 
 
 def check_sig(payload,sig):
-	print("in check_sig")
+    print("in check_sig")
     signature = sig
     message = json.dumps(payload)
     pk = payload.get("sender_pk")
     platform = payload.get("platform")
     if platform == 'Ethereum':
-    	print("it's eth")
+        print("it's eth")
         # Check if signature is valid
         encoded_msg = eth_account.messages.encode_defunct(text=message)
         result = (eth_account.Account.recover_message(encoded_msg, signature=signature) == pk)
     else:
-    	print("it's algo")
+        print("it's algo")
         # Check if signature is valid
         result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk['Payload'])
     return result
