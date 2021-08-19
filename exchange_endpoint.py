@@ -22,7 +22,7 @@ from models import Base, Order, TX, Log
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-algo_phase = ""
+# algo_phase = ""
 # global_secret = ""
 
 app = Flask(__name__)
@@ -103,6 +103,7 @@ def get_algo_keys():
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
     print("hello this is algo")
+    global algo_phase
     print(algo_phase)
     if algo_phase == "":
         algo_sk, algo_pk = account.generate_account()
