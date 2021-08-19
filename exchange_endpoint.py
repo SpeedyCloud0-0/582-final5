@@ -121,10 +121,10 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     print("in get_eth_keys")
     w3 = connect_to_eth()
     print(filename)
-    with open(filename, 'r') as fr:
+    with open(filename) as fr:
         print('open')
         try:
-            global_secret = fr.readline()
+            global_secret = fr.readlines()
             print(global_secret)
         except Exception as e:
             print("not reading")
