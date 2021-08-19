@@ -240,7 +240,7 @@ def check_sig(payload,sig):
 @app.route('/address', methods=['POST'])
 def address():
     if request.method == "POST":
-    	print("in address")
+        print("in address")
         content = request.get_json(silent=True)
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
