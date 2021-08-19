@@ -117,7 +117,9 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     # the ethereum public/private keys
     print("in get_eth_keys")
     global global_secret
-    w3 = connect_to_eth()
+
+    w3 = web3()
+    print("after w3")
     with open(filename, 'r') as fr:
         global_secret = fr.readline()
         print(global_secret)
