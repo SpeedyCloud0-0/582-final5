@@ -273,6 +273,7 @@ def trade():
     print("connect to blockchain")
     if request.method == "POST":
         content = request.get_json(silent=True)
+        print(content)
         columns = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "platform", "tx_id", "receiver_pk"]
         fields = [ "sig", "payload" ]
         error = False
@@ -293,12 +294,13 @@ def trade():
             print( json.dumps(content) )
             return jsonify( False )
         
+
         # Your code here
         # 1. Check the signature
         payload = content.get("payload")
         sig = content.get("sig")
         result = check_sig(payload,sig)
-
+        print(result)
         # 2. Add the order to the table
         if result:
             order = content['payload']
