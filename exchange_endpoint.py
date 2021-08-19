@@ -333,18 +333,24 @@ def trade():
         # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
         print("verify tx")
         if order_obj.platform == "Ethereum":
+            print("verifying eth")
             try:
                 tx = w3.eth.get_transaction(order_obj.tx_id)
-                if tx['value'] != order_obj.sell_amount or tx['from'] != order_obj.sender_pk or tx['to'] != self.address():
+                print("found eth tx")
+                if tx['value'] != order_obj.sell_amount or tx['from'] != order_obj.sender_pk:
+                    print("eth tx incorrect")
                     return jsonify(False)
             except Exception as e:
                 print("No transaction found")
                 return jsonify(False)
             print("eth tx verified")
         if order_obj.platform == "Algorand":
+        	   print("verifying algo")
             try:
                 tx = g.icl.search_transactions(txid=order_obj.tx_id)
-                if tx['amt'] != order_obj.sell_amount or tx['sender'] != order_obj.sender_pk or tx['receiver'] != self.address():
+                print("found algo tx")
+                if tx['amt'] != order_obj.sell_amount or tx['sender'] != order_obj.sender_pk:
+                    print("algo tx incorrect")
                     return jsonify(False)
             except Exception as e:
                 print("No transaction found")
@@ -375,7 +381,7 @@ def order_book():
         data.append(json_order)
     
     result = {"data": data}
-    return jsonify(True)
+    return jsonify(result)
 
 
 if __name__ == '__main__':
