@@ -117,27 +117,27 @@ def get_algo_keys():
 def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
-    print("in get_eth_keys")
-    # w3 = web3()
-    print(filename)
-    with open(filename, 'r') as fr:
-        try:
-            global_secret = fr.readline()
-            print(global_secret)
-        except Exception as e:
-        	   print("not reading")
+    # print("in get_eth_keys")
+    # # w3 = web3()
+    # print(filename)
+    # with open(filename, 'r') as fr:
+    #     try:
+    #         global_secret = fr.readline()
+    #         print(global_secret)
+    #     except Exception as e:
+    #     	   print("not reading")
 
 
-    if global_secret == "":
-        g.w3.eth.account.enable_unaudited_hdwallet_features()
-        acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
-        print(mnemonic_secret)
-        with open(filename, 'w') as fw:
-            fw.write(mnemonic_secret)
-    else:
-        acct = g.w3.eth.account.from_mnemonic(global_secret)
-    # acct = g.w3.eth.account.from_mnemonic(secret_phase_eth)
-
+    # if global_secret == "":
+    #     g.w3.eth.account.enable_unaudited_hdwallet_features()
+    #     acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
+    #     print(mnemonic_secret)
+    #     with open(filename, 'w') as fw:
+    #         fw.write(mnemonic_secret)
+    # else:
+    #     acct = g.w3.eth.account.from_mnemonic(global_secret)
+    secret_phase_eth = "inform lake track love vacuum juice virtual main define planet subway casual"
+    acct = g.w3.eth.account.from_mnemonic(secret_phase_eth)
     eth_sk = acct._private_Key
     eth_pk = acct._address
     print(eth_sk)
