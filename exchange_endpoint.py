@@ -243,7 +243,7 @@ def check_sig(payload,sig):
     else:
         print("it's algo")
         # Check if signature is valid
-        result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk['Payload'])
+        result = algosdk.util.verify_bytes(message.encode('utf-8'), signature, pk)
         print("algo verified")
     return result
 
