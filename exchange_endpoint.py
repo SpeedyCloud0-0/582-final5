@@ -118,12 +118,12 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
         global_secret = fr.readline()
 
     if global_secret == "":
-        w3.eth.account.enable_unaudited_hdwallet_features()
+        g.w3.eth.account.enable_unaudited_hdwallet_features()
         acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
         with open(filename, 'w') as fw:
             fw.write(mnemonic_secret)
     else:
-        acct = w3.eth.account.from_mnemonic(global_secret)
+        acct = g.w3.eth.account.from_mnemonic(global_secret)
 
     eth_sk = acct._private_Key
     eth_pk = acct._address
@@ -207,7 +207,7 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
     for algo_tx in algo_txes:
-        send_tokens_algo(acl, algo_tx['sender_sk'], algo_tx)
+        send_tokens_algo(g.acl, algo_tx['sender_sk'], algo_tx)
         g.session.add(algo_tx)
 
     for eth_tx in etg_txes:
