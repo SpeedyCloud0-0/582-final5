@@ -20,7 +20,8 @@ from models import Base, Order, TX, Log
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-
+secret_phase = "inform lake track love vacuum juice virtual main define planet subway casual talent flip joke argue " \
+             "robust student above fat palace carpet mandate abstract neck"
 app = Flask(__name__)
 
 """ Pre-defined methods (do not need to change) """
@@ -98,32 +99,34 @@ def get_algo_keys():
     
     # TODO: Generate or read (using the mnemonic secret) 
     # the algorand public/private keys
-    global algo_phase
-    if algo_phase == "":
-        algo_sk, algo_pk = account.generate_account()
-        algo_phase = mnemonic.from_private_key(algo_sk)
-    else:
-        algo_sk = mnemonic.to_private_key(mnemonic_phase)
-        algo_pk = mnemonic.to_public_key(mnemonic_phase)
-    
+    # global algo_phase
+    # if algo_phase == "":
+    #     algo_sk, algo_pk = account.generate_account()
+    #     algo_phase = mnemonic.from_private_key(algo_sk)
+    # else:
+    #     algo_sk = mnemonic.to_private_key(mnemonic_phase)
+    #     algo_pk = mnemonic.to_public_key(mnemonic_phase)
+    algo_sk = mnemonic.to_private_key(secret_phase)
+    algo_pk = mnemonic.to_public_key(secret_phase)
     return algo_sk, algo_pk
 
 
 def get_eth_keys(filename = "eth_mnemonic.txt"):
     # TODO: Generate or read (using the mnemonic secret) 
     # the ethereum public/private keys
-    global global_secret
-    w3 = connect_to_eth()
-    with open(filename, 'r') as fr:
-        global_secret = fr.readline()
+    # global global_secret
+    # w3 = connect_to_eth()
+    # with open(filename, 'r') as fr:
+    #     global_secret = fr.readline()
 
-    if global_secret == "":
-        g.w3.eth.account.enable_unaudited_hdwallet_features()
-        acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
-        with open(filename, 'w') as fw:
-            fw.write(mnemonic_secret)
-    else:
-        acct = g.w3.eth.account.from_mnemonic(global_secret)
+    # if global_secret == "":
+    #     g.w3.eth.account.enable_unaudited_hdwallet_features()
+    #     acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
+    #     with open(filename, 'w') as fw:
+    #         fw.write(mnemonic_secret)
+    # else:
+    #     acct = g.w3.eth.account.from_mnemonic(global_secret)
+    acct = g.w3.eth.account.from_mnemonic(secret_phase)
 
     eth_sk = acct._private_Key
     eth_pk = acct._address
