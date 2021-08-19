@@ -214,8 +214,8 @@ def execute_txes(txes):
         send_tokens_algo(g.acl, algo_tx['sender_sk'], algo_tx)
         g.session.add(algo_tx)
 
-    for eth_tx in etg_txes:
-        send_tokens_eth(w3, eth_tx['sender_sk'], eth_tx)
+    for eth_tx in eth_txes:
+        send_tokens_eth(g.w3, eth_tx['sender_sk'], eth_tx)
         g.session.add(eth_tx)
 
     g.session.commit()
@@ -244,15 +244,15 @@ def address():
         if 'platform' not in content.keys():
             print( f"Error: no platform provided" )
             return jsonify( "Error: no platform provided" )
-        if not content['platform'] in ["Ethereum", "Algorand"]:
+        if not content['payload']['platform'] in ["Ethereum", "Algorand"]:
             print( f"Error: {content['platform']} is an invalid platform" )
             return jsonify( f"Error: invalid platform provided: {content['platform']}"  )
         
-        if content['Payload']['sell_currency'] == "Ethereum":
+        if content['payload']['sell_currency'] == "Ethereum":
             #Your code here
             eth_sk, eth_pk  = get_eth_keys("eth_mnemonic.txt")
             return jsonify(eth_pk)
-        if content['Payload']['sell_currency'] == "Algorand":
+        if content['payload']['sell_currency'] == "Algorand":
             #Your code here
             algo_sk, algo_pk = get_algo_keys()
             return jsonify(algo_pk)
