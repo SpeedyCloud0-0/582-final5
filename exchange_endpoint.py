@@ -353,6 +353,7 @@ def order_book():
     print("in order_book")
     fields = [ "buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk" ]
     orders = [order for order in g.session.query(Order).all()]
+    print(len(orders))
     data = []
     for existing_oder in orders:
         json_order = {'sender_pk': existing_oder.sender_pk, 'receiver_pk': existing_oder.receiver_pk,
@@ -361,7 +362,9 @@ def order_book():
                       'tx_id': existing_oder.tx_id}
 
         data.append(json_order)
+    
     result = {"data": data}
+    print("returning from order_book")
     return jsonify(result)
 
 
