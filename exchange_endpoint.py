@@ -120,8 +120,8 @@ def get_algo_keys():
             print("not reading")
 
     if algo_phase == "":
-        private_key, account_address = account.generate_account()
-        algo_phase = mnemonic.from_private_key(private_key)
+        algo_sk, algo_pk = account.generate_account()
+        algo_phase = mnemonic.from_private_key(algo_sk)
         with open("algo_mnemonic.txt") as fw:
             fw.write(algo_phase)
     else:
