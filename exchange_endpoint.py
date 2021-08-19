@@ -132,16 +132,16 @@ def get_eth_keys(filename = "eth_mnemonic.txt"):
     if global_secret == "":
         acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
         print(mnemonic_secret)
-        with open(filename, 'w') as fw:
+        with open(filename) as fw:
+        	print("open again")
             fw.write(mnemonic_secret)
     else:
         acct = w3.eth.account.from_mnemonic(global_secret)
 
-    # secret_phase_eth = "inform lake track love vacuum juice virtual main define planet subway casual"
-    # acct = g.w3.eth.account.from_mnemonic(secret_phase_eth)
+
     eth_sk = acct._private_Key
-    eth_pk = acct._address
     print(eth_sk)
+    eth_pk = acct._address
     print(eth_pk)
     return eth_sk, eth_pk
   
